@@ -30,6 +30,11 @@
 	  		padding-bottom:40px;
 		}
 
+		.click
+		{
+
+		}
+
 		/* two columns - column creation */
 		.column {
 		  	float: left;
@@ -56,16 +61,123 @@
 		}
 	</style>
 
+	<script type="text/javascript">
+    var flagclock = 0;
+    var flagstop = 1;
+    var stoptime = 0;
+    var currenttime;
+    var splitdate = '';
+    var output;
+    var clock;
+    
+    function startstop()
+    {
+    var startstop = document.getElementById('startstoptimer');
+    var startdate = new Date();
+    var starttime = startdate.getTime();
+    if(flagclock==0)
+    	{
+    	startstop.value = 'Stop Timer';
+    	flagclock = 1;
+    	counter(starttime);
+    	}
+    else
+    	{
+    	startstop.value = 'Start Timer';
+    	flagclock = 0;
+    	flagstop = 1;
+    	splitdate = '';
+    	}
+    }
+    
+    function counter(starttime)
+    {
+    output = document.getElementById('output');
+    clock = document.getElementById('clock');
+    currenttime = new Date();
+    var timediff = currenttime.getTime() - starttime;
+    if(flagstop == 1)
+    	{
+    	timediff = timediff + stoptime
+    	}
+    if(flagclock == 1)
+    	{
+    	clock.value = formattime(timediff,'');
+    	refresh = setTimeout('counter(' + starttime + ');',10);
+    	}
+    else
+    	{
+    	window.clearTimeout(refresh);
+    	stoptime = timediff;
+    	}
+    }
+    
+    function formattime(rawtime,roundtype)
+    {
+    if(roundtype == 'round')
+    	{
+    	var ds = Math.round(rawtime/100) + '';
+    	}
+    else
+    	{
+    	var ds = Math.floor(rawtime/100) + '';		
+    	}
+    var sec = Math.floor(rawtime/1000);
+    var min = Math.floor(rawtime/60000);
+    var ms = rawtime % 1000;
+    ds = ds.charAt(ds.length - 1);
+    if(min >= 60)
+    {
+    	startstop();
+    }
+
+    ms = ms + '';
+    if(ms.charAt(ms.length - 3) != '')
+    {
+  		ms = ms.charAt(ms.length - 3) + ms.charAt(ms.length - 2) + ms.charAt(ms.length - 1);
+    }
+	else if(ms.charAt(ms.length - 2) != '')
+	{
+		ms = 0 + ms.charAt(ms.length - 2) + ms.charAt(ms.length - 1);
+	}
+    else
+    {
+    	ms = '00' + ms.charAt(ms.length - 1);
+    }
+
+    sec = sec - 60 * min + '';
+    if(sec.charAt(sec.length - 2) != '')
+    	{
+    	sec = sec.charAt(sec.length - 2) + sec.charAt(sec.length - 1);
+    	}
+    else
+    	{
+    	sec = 0 + sec.charAt(sec.length - 1);
+    	}	
+    min = min + '';
+    if(min.charAt(min.length - 2) != '')
+    	{
+    	min = min.charAt(min.length - 2)+min.charAt(min.length - 1);
+    	}
+    else
+    	{
+    	min = 0 + min.charAt(min.length - 1);
+    	}
+    return min + ':' + sec + "." + ms;
+
+    }
+</script>
+
 </head>
 
-<body>
+<body onload="startstop()">
 
 	<div class="main-container">
 		<h1>Find the correct image</h1>
 		<div class="row">
 			<div class="column-container">
 
-
+				<!-- 100 images -->
 				<div class="column">
 				    <div class="image">
 				        <img src="pics/1.png">
@@ -562,13 +674,16 @@
 				    </div>
 				</div>
 				<div class="column">
-				    <div class="image">
-				        <img src="pics/100.png">
+				    <div class="image" onclick="startstop()">
+				        	<img src="pics/100.png">
+				        </div>
 				    </div>
 				</div>
-
 			</div>
-		</div>
+	
+		<input id="clock" type="text" value="00:00.000" style="text-align: center;background-color:white;border:1px solid gray;font-weight:bold;font-size:14pt;" readonly><br>
+		<input id="startstoptimer" type="button" value="Start Timer" onClick="startstop();" style="font-weight:bold"><br>
+
 	</div>
 
 	<!-- script used to autogenerate image javascript code -->
@@ -582,3 +697,9 @@
 	
 </body>
 </html>
+
+<!-- clock code sourced from:
+
+	https://www.webdeveloper.com/d/243154-how-to-start-my-timer-on-page-load
+
+	-->
