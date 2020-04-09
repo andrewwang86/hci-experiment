@@ -33,7 +33,7 @@
 
 		.click
 		{
-
+			text-align: center;
 		}
 
 		/* two columns - column creation */
@@ -192,9 +192,9 @@
 
 				<!-- 100 images -->
 				<div class="column">
-				    <div class="image">
+				    <div class="image" onclick="startstop()">
 				        <img src="pics/1.png">
-				    </div>
+					</div>
 				</div>
 				<div class="column">
 				    <div class="image">
@@ -687,12 +687,17 @@
 				    </div>
 				</div>
 				<div class="column">
-				    <div class="image" onclick="startstop()">
-				        	<img src="pics/100.png">
-				        </div>
+				    <div class="image">
+				       	<img src="pics/100.png">
 				    </div>
-				</div>
+			    </div>
 			</div>
+			<div class="click">
+				<button type="button" onclick="window.location.href = 'trial-1-inst.html';">Go to Next Trial</button><br>
+				<button type="button" onclick="window.location.href = 'index.html';">Return to Home</button>
+			</div>
+		</div>
+
 	</div>
 
 				<footer id="footer" align="left">
